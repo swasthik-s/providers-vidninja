@@ -63,6 +63,7 @@ import { viperScraper } from './embeds/viper';
 import { warezcdnembedHlsScraper } from './embeds/warezcdn/hls';
 import { warezcdnembedMp4Scraper } from './embeds/warezcdn/mp4';
 import { warezPlayerScraper } from './embeds/warezcdn/warezplayer';
+import { wecimaEmbedScraper } from './embeds/wecima-embed';
 import { zunimeEmbeds } from './embeds/zunime';
 import { EightStreamScraper } from './sources/8stream';
 import { animeflvScraper } from './sources/animeflv';
@@ -187,5 +188,6 @@ export function gatherAllEmbeds(): Array<Embed> {
     vidnestAllmoviesEmbed,
     vidnestFlixhqEmbed,
     vidnestOfficialEmbed,
+    wecimaEmbedScraper,
   ];
 }

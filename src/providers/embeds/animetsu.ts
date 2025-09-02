@@ -23,7 +23,7 @@ export function makeAnimetsuEmbed(id: string, rank: number = 100) {
       const serverName = id as (typeof ANIMETSU_SERVERS)[number];
 
       const query = JSON.parse(ctx.url);
-      const { type, anilistId, episode } = query;
+      const { type, animetsuId, episode } = query; // Use animetsuId instead of anilistId
 
       if (type !== 'movie' && type !== 'show') {
         throw new NotFoundError('Unsupported media type');
@@ -34,7 +34,7 @@ export function makeAnimetsuEmbed(id: string, rank: number = 100) {
         headers,
         query: {
           server: serverName,
-          id: String(anilistId),
+          id: String(animetsuId), // Use animetsu internal ID
           num: String(episode ?? 1),
           subType: 'dub',
         },

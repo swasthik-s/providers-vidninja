@@ -1,5 +1,6 @@
 import { load } from 'cheerio';
 
+import { flags } from '@/entrypoint/utils/targets';
 import { SourcererEmbed, makeSourcerer } from '@/providers/base';
 import { closeLoadScraper } from '@/providers/embeds/closeload';
 import { ridooScraper } from '@/providers/embeds/ridoo';
@@ -78,8 +79,8 @@ export const ridooMoviesScraper = makeSourcerer({
   id: 'ridomovies',
   name: 'RidoMovies',
   rank: 210,
-  flags: [],
-  disabled: false,
+  flags: [flags.CF_BLOCKED],
+  disabled: true, // Disabled: closeload embed scraper is broken
   scrapeMovie: universalScraper,
   scrapeShow: universalScraper,
 });

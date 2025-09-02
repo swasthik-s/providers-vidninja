@@ -3,41 +3,43 @@ import { getAnilistIdFromMedia } from '@/utils/anilist';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
-  const anilistId = await getAnilistIdFromMedia(ctx, ctx.media);
+  let embedUrls: { embedId: string; url: string }[] = [];
 
-  const query: any = {
-    type: ctx.media.type,
-    title: ctx.media.title,
-    tmdbId: ctx.media.tmdbId,
-    imdbId: ctx.media.imdbId,
-    anilistId,
-    ...(ctx.media.type === 'show' && {
-      season: ctx.media.season.number,
-      episode: ctx.media.episode.number,
-    }),
-    ...(ctx.media.type === 'movie' && { episode: 1 }),
-    releaseYear: ctx.media.releaseYear,
-  };
+  // Generate proper embed URLs based on content type
+  if (ctx.media.type === 'movie') {
+    // For movies, use TMDB-based embed URLs
+    const baseEmbedUrl = `https://vidnest.fun/movie/${ctx.media.tmdbId}`;
+    embedUrls = [
+      { embedId: 'zunime-hd-2', url: baseEmbedUrl },
+      { embedId: 'zunime-miko', url: baseEmbedUrl },
+      { embedId: 'zunime-shiro', url: baseEmbedUrl },
+      { embedId: 'zunime-zaza', url: baseEmbedUrl },
+    ];
+  } else if (ctx.media.type === 'show') {
+    try {
+      // Try to get Anilist ID for anime shows
+      const anilistId = await getAnilistIdFromMedia(ctx, ctx.media);
+      const baseEmbedUrl = `https://vidnest.fun/anime/${anilistId}/${ctx.media.episode.number}/dub`;
+      embedUrls = [
+        { embedId: 'zunime-hd-2', url: baseEmbedUrl },
+        { embedId: 'zunime-miko', url: baseEmbedUrl },
+        { embedId: 'zunime-shiro', url: baseEmbedUrl },
+        { embedId: 'zunime-zaza', url: baseEmbedUrl },
+      ];
+    } catch {
+      // Fallback to TMDB for regular TV shows
+      const baseEmbedUrl = `https://vidnest.fun/tv/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
+      embedUrls = [
+        { embedId: 'zunime-hd-2', url: baseEmbedUrl },
+        { embedId: 'zunime-miko', url: baseEmbedUrl },
+        { embedId: 'zunime-shiro', url: baseEmbedUrl },
+        { embedId: 'zunime-zaza', url: baseEmbedUrl },
+      ];
+    }
+  }
 
   return {
-    embeds: [
-      {
-        embedId: 'zunime-hd-2',
-        url: JSON.stringify(query),
-      },
-      {
-        embedId: 'zunime-miko',
-        url: JSON.stringify(query),
-      },
-      {
-        embedId: 'zunime-shiro',
-        url: JSON.stringify(query),
-      },
-      {
-        embedId: 'zunime-zaza',
-        url: JSON.stringify(query),
-      },
-    ],
+    embeds: embedUrls,
   };
 }
 
@@ -45,6 +47,8 @@ export const zunimeScraper = makeSourcerer({
   id: 'zunime',
   name: 'Zunime',
   rank: 125,
+  disabled: true, // Disabled due to API authentication issues
   flags: [],
+  scrapeMovie: comboScraper,
   scrapeShow: comboScraper,
 });
