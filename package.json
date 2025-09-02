@@ -1,7 +1,7 @@
 {
-  "name": "@p-stream/providers",
-  "version": "3.1.0",
-  "description": "Package that contains all the providers of p-stream",
+  "name": "@vidninja/providers",
+  "version": "0.2.1",
+  "description": "Package that contains all the providers of vidninja",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -22,18 +22,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/p-stream/providers.git"
+    "url": "git+https://github.com/vidninja/providers.git"
   },
   "keywords": [
-    "p-stream",
+    "vidninja",
     "providers"
   ],
-  "author": "p-stream",
+  "author": "vidninja",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/p-stream/providers/issues"
+    "url": "https://github.com/vidninja/providers/issues"
   },
-  "homepage": "https://p-stream.github.io/providers/",
+  "homepage": "https://vidninja.github.io/providers/",
   "scripts": {
     "build": "vite build && tsc --noEmit",
     "cli": "vite-node ./src/dev-cli/index.ts",
